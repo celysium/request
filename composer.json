@@ -16,7 +16,7 @@
         "php": "^8.0.2",
         "laravel/framework" : "^9.0|^10.0",
         "celysium/responser": "^1.1",
-        "celysium/authenticate": "^1.2"
+        "celysium/authenticate": "^1.1"
     },
     "extra": {
         "laravel": {
