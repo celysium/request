@@ -14,16 +14,17 @@ class RequestBuilder
      * Call request http.
      * @return mixed
      */
-    public function request(): mixed
+    public function request(): PendingRequest
     {
-        return $this->configuration(new Http());
+        $http = new Http();
+        return $this->configuration($http);
     }
 
     /**
      * @param Closure $callback
      * @return mixed
      */
-    public function batch(Closure $callback): mixed
+    public function batch(Closure $callback): array
     {
         return Http::pool(function(Pool $pool) use ($callback) {
             return $callback($pool);
@@ -44,7 +45,7 @@ class RequestBuilder
         return $this->configuration($pool);
     }
 
-    public function configuration(mixed $request): mixed
+    public function configuration(Http|Pool $request): PendingRequest
     {
         return $request
             ->baseUrl(env('HUB_BASE_URL'))
