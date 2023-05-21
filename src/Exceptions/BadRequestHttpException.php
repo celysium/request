@@ -26,7 +26,7 @@ class BadRequestHttpException extends Exception
     public function render(Request $request): JsonResponse
     {
         $response = $this->response->json();
-        return Responser::error($response['data'], $response['messages'], ResponseClass::HTTP_BAD_REQUEST, $response['meta']);
+        return Responser::error($response['data'], $response['messages'], $this->response->status(), $response['meta']);
     }
 
 }
