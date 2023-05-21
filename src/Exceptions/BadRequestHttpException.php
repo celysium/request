@@ -7,7 +7,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseClass;
-use Celysium\Responser\Facades\Responser;
+use Celysium\Responser\Responser;
 use Throwable;
 
 class BadRequestHttpException extends Exception
@@ -26,7 +26,7 @@ class BadRequestHttpException extends Exception
     public function render(Request $request): JsonResponse
     {
         $response = $this->response->json();
-        return Responser::respond($response['data'], $response['messages'], ResponseClass::HTTP_BAD_REQUEST, $response['meta']);
+        return Responser::error($response['data'], $response['messages'], ResponseClass::HTTP_BAD_REQUEST, $response['meta']);
     }
 
 }
