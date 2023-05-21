@@ -7,17 +7,23 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Http;
 use Celysium\Authenticate\Facades\Authenticate;
+use Exception;
 
 class RequestBuilder
 {
     /**
      * Call request http.
+     * @param string|null $to
      * @return mixed
+     * @throws Exception
      */
-    public function request(): PendingRequest
+    public function request(string $to = null): PendingRequest
     {
-        $http = new Http();
-        return $this->configuration($http);
+        $baseUrl = $to === 'api_gateway' ? env('AG_BASE_URL') : env('HUB_BASE_URL');
+        if(is_null($baseUrl)) {
+            throw new Exception('base url not set in env');
+        }
+        return $this->configuration(Http::BaseUrl($baseUrl));
     }
 
     /**
@@ -45,10 +51,9 @@ class RequestBuilder
         return $this->configuration($pool);
     }
 
-    public function configuration(Http|Pool $request): PendingRequest
+    public function configuration(PendingRequest|Http|Pool $request): PendingRequest
     {
         return $request
-            ->baseUrl(env('HUB_BASE_URL'))
             ->acceptJson()
             ->withHeaders(['microservice' => env('MICROSERVICE_SLUG', 'none')])
             ->withHeaders(Authenticate::headers());
