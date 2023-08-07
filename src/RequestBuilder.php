@@ -54,6 +54,7 @@ class RequestBuilder
     public function configuration(PendingRequest|Http|Pool $request): PendingRequest
     {
         return $request
+            ->BaseUrl(env('HUB_BASE_URL'))
             ->acceptJson()
             ->withHeaders(['microservice' => env('MICROSERVICE_SLUG', 'none')])
             ->withHeaders(Authenticate::headers());
